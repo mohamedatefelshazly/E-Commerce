@@ -64,7 +64,7 @@ export default function Nav() {
                     <i className='fa-brands fa-youtube'></i>
                 </div>
                 {!userToken && <>
-                    <NavbarItem className="hidden lg:flex">
+                    <NavbarItem className="lg:flex">
                         <Link href="/login">
                             <NavLink to={"/login"}> Login</NavLink>
                         </Link>
@@ -75,9 +75,9 @@ export default function Nav() {
                         </Button>
                     </NavbarItem>
                 </>}
-                {userToken && <NavbarItem className="hidden lg:flex">
+                {userToken && <NavbarItem className="lg:flex">
                     <Link href="/login">
-                        <NavLink to={"/login"} onClick={() => {
+                        <NavLink to={"/login"} className={"text-red-500 border-red-500 border px-2 rounded-md hover:text-white hover:bg-red-500"} onClick={() => {
                             setuserToken(null)
                             localStorage.removeItem("userToken")
                         }}> Logout</NavLink>
@@ -89,18 +89,31 @@ export default function Nav() {
             {userToken && <NavbarMenu>
                 {menuItems.map((item, index) => (
                     <NavbarMenuItem key={`${item}-${index}`}>
-                        <Link
+                        <NavLink
                             className="w-full"
                             color={
                                 index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
                             }
-                            href="#"
+                            to={item.toLowerCase()}
                             size="lg"
+                            onClick={() => setIsMenuOpen(true)}
                         >
                             {item}
-                        </Link>
+                        </NavLink>
+
+
                     </NavbarMenuItem>
-                ))}
+                ))}<div>
+
+                    {userToken && <NavbarItem className="">
+                        <Link href="/login">
+                            <NavLink to={"/login"} className={"text-red-500 border-red-500 border px-2 rounded-md hover:text-white hover:bg-red-500"} onClick={() => {
+                                setuserToken(null)
+                                localStorage.removeItem("userToken")
+                            }}> Logout</NavLink>
+                        </Link>
+                    </NavbarItem>}
+                </div>
             </NavbarMenu>}
 
         </Navbar>

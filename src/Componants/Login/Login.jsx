@@ -25,7 +25,7 @@ export default function Login() {
                 setisClicked(false)
             })
             .catch((error) => {
-                seterrorMessage(error.response.data.message)
+                seterrorMessage(error?.response?.data?.message)
                 setsuccessMassage(null)
                 setTimeout(() => { seterrorMessage(null) }, 2000)
                 setisClicked(false)
@@ -69,10 +69,10 @@ export default function Login() {
         })
     })
     return (
-        <div>
+        <div className="w-[95%]">
             {errorMessage && <h1 className="text-red-600 text-2xl font-bold text-center m-3">{errorMessage}</h1>}
             {successMassage && <h1 className="text-green-600 text-2xl font-bold text-center m-3">{successMassage}</h1> && navigate("/home")}
-            <h1 className="translate-x-[24%] m-3">Register Now</h1>
+            <h1 className="translate-x-[20%] m-3">Login</h1>
             <form onSubmit={registerFormik.handleSubmit} className="max-w-md mx-auto">
 
                 <div className="relative z-0 w-full mb-5 group">
