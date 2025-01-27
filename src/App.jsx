@@ -12,16 +12,28 @@ import AuthContextProvider from './Context/AuthContext/AuthContextProvider';
 import ProtectedRoute from './Context/ProtectedRoute/ProtectedRoute';
 import Cart from './Componants/Cart/Cart';
 import { ToastContainer } from 'react-toastify';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Categeroies from './Componants/Categeroies/Categeroies';
+import Brands from './Componants/Brands/Brands';
+import AddAddress from './Componants/AddAddress/AddAddress';
+import Allorders from './Componants/AllOrders/Allorders';
 
 
-
+const client = new QueryClient({
+  defaultOptions: {
+    // refetch
+  }
+})
 function App() {
   const route = createBrowserRouter([{
     path: "", element: <Layout />, children: [
       { index: true, element: <ProtectedRoute><Home /></ProtectedRoute> },
       { path: "home", element: <ProtectedRoute><Home /></ProtectedRoute> },
-      { path: "brands", element: <ProtectedRoute><h1>Brands</h1></ProtectedRoute> },
+      { path: "brands", element: <ProtectedRoute><Brands /></ProtectedRoute> },
       { path: "cart", element: <ProtectedRoute><Cart /></ProtectedRoute> },
+      { path: "categeroies", element: <ProtectedRoute><Categeroies /></ProtectedRoute> },
+      { path: "addAdress/:cartId", element: <ProtectedRoute><AddAddress /></ProtectedRoute> },
+      { path: "allorders", element: <ProtectedRoute><Allorders /></ProtectedRoute> },
       { path: "register", element: <Register /> },
       { path: "login", element: <Login /> },
       { path: "productdetails/:id", element: <ProtectedRoute><ProductDetails /></ProtectedRoute> },
@@ -32,13 +44,14 @@ function App() {
 
   return (
     <>
-      <AuthContextProvider>
-        <HeroUIProvider>
-          <RouterProvider router={route} />
-          <ToastContainer />
-        </HeroUIProvider>
-      </AuthContextProvider>
-
+      <QueryClientProvider client={client}>
+        <AuthContextProvider>
+          <HeroUIProvider>
+            <RouterProvider router={route} />
+            <ToastContainer />
+          </HeroUIProvider>
+        </AuthContextProvider>
+      </QueryClientProvider>
     </>
   )
 }
