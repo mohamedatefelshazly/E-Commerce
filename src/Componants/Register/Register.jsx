@@ -7,6 +7,7 @@ import { RotatingLines } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import * as yup from 'yup';
 import { authContext } from "../../Context/AuthContext/AuthContextProvider";
+import { Button } from "@heroui/react";
 
 
 
@@ -111,8 +112,8 @@ export default function Register() {
                 </div>
 
 
-                <button type="submit" className="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    {!isClicked ? "Register" : <RotatingLines
+                <Button isLoading={isClicked} color="success" type="submit" className="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    {/* {!isClicked ? "Login" : <RotatingLines
                         visible={true}
                         height="50"
                         width="50"
@@ -121,7 +122,9 @@ export default function Register() {
                         ariaLabel="rotating-lines-loading"
                         wrapperStyle={{}}
                         wrapperClass=""
-                    />}</button>
+                    />} */}
+                    Login
+                </Button>
             </form>
         </div>
 

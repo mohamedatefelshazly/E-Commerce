@@ -37,9 +37,9 @@ export default function Nav() {
                     className="sm:hidden"
                 />
                 <NavbarBrand>
-                    <p className="font-bold text-inherit">
+                    <a href='/' className="font-bold text-inherit">
                         <img src={logo} alt="logo" className='w-full' />
-                    </p>
+                    </a>
                 </NavbarBrand>
             </NavbarContent>
 

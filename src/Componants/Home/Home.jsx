@@ -9,10 +9,17 @@ import img3 from "../../assets/E-Commerce assets/images/slider-image-3.jpeg"
 import img4 from "../../assets/E-Commerce assets/images/banner-4.jpeg"
 import img5 from "../../assets/E-Commerce assets/images/grocery-banner-2.jpeg"
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useContext } from "react";
+import Login from "../Login/Login";
+import { authContext } from "../../Context/AuthContext/AuthContextProvider";
 
 
 
 export default function Home() {
+    const { userToken, setuserToken } = useContext(authContext)
+    if (userToken == null) {
+        return <Login />
+    }
     // const [allProducts, setallProducts] = useState([])
     // const [isLoading, setisLoading] = useState(true)
 

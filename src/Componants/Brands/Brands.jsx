@@ -1,8 +1,15 @@
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 import LoadingScreen from "../LoadingScreen/LoadingScreen"
+import { useContext } from "react"
+import { authContext } from "../../Context/AuthContext/AuthContextProvider"
 
 export default function Brands() {
+const { userToken, setuserToken } = useContext(authContext)
+    if (userToken == null) {
+        return <Login />
+    }
+
     function getBrands() {
         return axios.get("https://ecommerce.routemisr.com/api/v1/brands", {
             headers: {

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useEffect, useState } from "react"
 
 // import React from 'react'
@@ -7,13 +8,21 @@ export default function AuthContextProvider({ children }) {
 
     useEffect(() => {
         if (localStorage.getItem("userToken") != null) {
-            setuserToken(localStorage.getItem("userToken"))
+            axios.get("https://ecommerce.routemisr.com/api/v1/auth/verifyToken", {
+                headers: { token: localStorage.getItem("userToken") }
+            }).then((res) => {
+                if (res.data.message == "verified") {
+                    setuserToken(localStorage.getItem("userToken"))
+                } else {
+                    localStorage.removeItem("userToken")
+                    setuserToken(null)
+                }
+
+            })
+
         }
-    
-      return () => {
-      }
     }, [])
-    
+
     return (
 
         <authContext.Provider value={{ setuserToken, userToken, }}>

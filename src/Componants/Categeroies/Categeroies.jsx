@@ -3,8 +3,15 @@
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 import LoadingScreen from "../LoadingScreen/LoadingScreen"
+import { useContext } from "react"
+import { authContext } from "../../Context/AuthContext/AuthContextProvider"
+import Login from "../Login/Login"
 
 export default function Categeroies() {
+    const { userToken, setuserToken } = useContext(authContext)
+    if (userToken == null) {
+        return <Login />
+    }
     function getCategeroies() {
         return axios.get("https://ecommerce.routemisr.com/api/v1/categories", {
             headers: {
@@ -22,7 +29,7 @@ export default function Categeroies() {
     if (isError) {
         console.log(error);
     }
-    
+
 
 
     const allCategeroies = data?.data?.data;

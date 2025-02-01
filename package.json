@@ -2,7 +2,7 @@
   "name": "e-commerce",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://mohamedatefelshazly.github.io/E-Commerce",
+  "homepage": "https://mohamedatefelshazly.github.io/E-Commerce/",
   "type": "module",
   "scripts": {
     "predeploy": "npm run build",

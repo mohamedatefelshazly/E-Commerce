@@ -9,6 +9,7 @@ import { useState } from "react";
 export default function CartProduct({ prod, setisEdited }) {
 
     const [isLoading, setisLoading] = useState(false)
+    const [isLoading1, setisLoading1] = useState(false)
     const [productCount, setproductCount] = useState(prod.count)
     function removeProduct(id) {
         setisLoading(true)
@@ -20,6 +21,18 @@ export default function CartProduct({ prod, setisEdited }) {
             console.log(data);
             setisLoading(false)
             setisEdited(true)
+        })
+
+    }
+    function AddProductToWishList(id) {
+        setisLoading1(true)
+        axios.post(`https://ecommerce.routemisr.com/api/v1/wishlist`,{"productId":id}, {
+            headers: {
+                token: localStorage.getItem("userToken")
+            }
+        }).then(({ data }) => {
+            console.log(data);
+            setisLoading1(false)
         })
 
     }
@@ -66,8 +79,8 @@ export default function CartProduct({ prod, setisEdited }) {
                 <a href="#" className="text-base font-medium text-gray-900 hover:underline dark:text-white">{prod?.product?.title}</a>
 
                 <div className="flex items-center gap-4">
-                    <Button className="text-sm font-medium text-gray-500 hover:text-gray-900 hover:underline dark:text-gray-400 dark:hover:text-white">
-                        <i className="fa fa-heart"></i><span>Add to Favorites</span>
+                    <Button isLoading={isLoading1} onPress={() => AddProductToWishList(prod?.product?._id)} className="text-sm font-medium text-gray-500 hover:text-gray-900 hover:underline dark:text-gray-400 dark:hover:text-white">
+                        <i className="fa fa-heart"></i><span>Add to Wishlist</span>
                     </Button>
 
                     <Button isLoading={isLoading} onPress={() => removeProduct(prod?.product?._id)} className="inline-flex items-center text-sm font-medium text-red-600 hover:underline dark:text-red-500">
