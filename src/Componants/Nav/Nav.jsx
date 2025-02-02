@@ -30,7 +30,7 @@ export default function Nav() {
     ];
 
     return (
-        <Navbar shouldHideOnScroll onMenuOpenChange={setIsMenuOpen} className='mb-4'>
+        <Navbar shouldHideOnScroll onMenuOpenChange={setIsMenuOpen} className='mb-4 bg-[#f0f3f2]'>
             <NavbarContent>
                 <NavbarMenuToggle
                     aria-label={isMenuOpen ? "Close menu" : "Open menu"}

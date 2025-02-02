@@ -1,14 +1,16 @@
 // import React from 'react'
-import axios from "axios";
+import { Button } from "@heroui/react";
+import axios, { all } from "axios";
 import { useFormik } from "formik"
 import { useEffect, useState } from "react";
-import { RotatingLines } from "react-loader-spinner";
+// import { RotatingLines } from "react-loader-spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from 'yup';
 
 
 export default function AddAddress() {
     const navigate = useNavigate()
+    const [allAddress, setallAddress] = useState([])
     const [errorMessage, seterrorMessage] = useState(null)
     const [successMassage, setsuccessMassage] = useState(null)
     const [isClicked, setisClicked] = useState(false)
@@ -16,15 +18,17 @@ export default function AddAddress() {
 
     function AddAddressAndGoToPay(user) {
         setisClicked(true)
+        setAddress()
         axios.post(`https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}`, user, {
             headers: {
                 token: localStorage.getItem("userToken")
             },
-            url: "http://localhost:5174"
+            url: "http://localhost:5173"
         }).then(
             (res) => {
                 // setsuccessMassage(res.data)
                 console.log(res.data.session.url);
+                window.location.href = res.data.session.url
                 seterrorMessage(null)
                 setisClicked(false)
             })
@@ -35,8 +39,23 @@ export default function AddAddress() {
                 setisClicked(false)
             })
     }
+    function pay(x) {
+        axios.post(`https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}`, x, {
+            headers: {
+                token: localStorage.getItem("userToken")
+            },
+            url: "http://localhost:5173"
+        }).then(
+            (res) => {
+                // setsuccessMassage(res.data)
+                console.log(res.data.session.url);
+                window.location.href = res.data.session.url
+                seterrorMessage(null)
+                setisClicked(false)
+            })
+    }
     useEffect(() => {
-
+        getAllAddress()
 
         return () => {
             clearInterval()
@@ -47,9 +66,9 @@ export default function AddAddress() {
     const registerFormik = useFormik({
         initialValues: {
             // name: "Home",
-            details: "Home details",
-            phone: "01010700700",
-            city: "Gizaa"
+            details: "",
+            phone: "",
+            city: ""
         }, onSubmit: AddAddressAndGoToPay,
         validationSchema: yup.object().shape({
 
@@ -60,6 +79,35 @@ export default function AddAddress() {
 
         })
     })
+
+    function getAllAddress() {
+        axios.get(`https://ecommerce.routemisr.com/api/v1/addresses`, {
+            headers: {
+                token: localStorage.getItem("userToken")
+            }
+        }).then(({ data }) => {
+            setallAddress(data.data);
+            console.log(data.data);
+
+        })
+
+    }
+    function setAddress() {
+        axios.post(`https://ecommerce.routemisr.com/api/v1/addresses`, {
+            name: "work",
+            details: "Home details",
+            phone: "01010700700",
+            city: "Cairo"
+        }, {
+            headers: {
+                token: localStorage.getItem("userToken")
+            }
+        }).then(({ data }) => {
+            // console.log(data);
+        })
+
+    }
+
     return (
         <div className="w-[95%]">
             {errorMessage && <h1 className="text-red-600 text-2xl font-bold text-center m-3">{errorMessage}</h1>}
@@ -93,8 +141,8 @@ export default function AddAddress() {
 
 
 
-                <button type="submit" className="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    {!isClicked ? "Add Address & Go to pay" : <RotatingLines
+                <Button isLoading={isClicked} type="submit" className="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    {/* {!isClicked ? "Add Address & Go to pay" : <RotatingLines
                         visible={true}
                         height="50"
                         width="50"
@@ -103,8 +151,41 @@ export default function AddAddress() {
                         ariaLabel="rotating-lines-loading"
                         wrapperStyle={{}}
                         wrapperClass=""
-                    />}</button>
+                    />} */}
+                    Add Address & Go to pay</Button>
             </form>
+            <div className="w-full mt-2  p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+                <h1 className="text-3xl text-center font-bold text-gray-900 dark:text-white">Your Last Addresses</h1>
+                <div className="grid md:grid-cols-2 gap-3">
+                    {allAddress?.map((address, index) => <div key={index} className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+
+                        <div className="flex items-baseline text-gray-900 dark:text-white">
+                            <span className="text-3xl font-semibold">Name : {address.name}</span>
+
+                        </div>
+                        <ul role="list" className="space-y-5 my-7">
+                            <li className="flex items-center">
+                                <span className="text-base font-normal leading-tight text-gray-500 dark:text-gray-400 ms-3">phone: {address.phone}</span>
+                            </li>
+                            <li className="flex items-center">
+                                <span className="text-base font-normal leading-tight text-gray-500 dark:text-gray-400 ms-3">City: {address.city}</span>
+                            </li>
+                            <li className="flex items-center">
+                                <span className="text-base font-normal leading-tight text-gray-500 dark:text-gray-400 ms-3">Details: {address.details}</span>
+                            </li>
+
+                        </ul>
+                        <button onClick={() => {
+                            pay({
+                                details: address.details,
+                                phone: address.phone,
+                                city: address.city,
+                            })
+                        }} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-200 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-center w-full text-center">Use this and go to Pay</button>
+                    </div>)}
+
+                </div>
+            </div>
         </div>
 
     )
