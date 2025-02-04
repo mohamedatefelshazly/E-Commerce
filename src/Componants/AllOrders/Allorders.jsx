@@ -32,11 +32,11 @@ export default function Allorders() {
         console.log(error);
     }
     return (
-        <><div className="grid md:grid-cols-2 gap-3" >
+        <><div className="grid md:grid-cols-2 gap-5" >
             {allOrders?.map((order) =>
-                <div className="grid shadow shadow-black overflow-hidden p-2" key={order.id}>
-                    <h1 className="text-xl text-center font-bold leading-none text-gray-900 dark:text-white">Order No. <span className="text-blue-600">{order.id}</span></h1>
-                    <h1>Total Price: <span>{order.totalOrderPrice}</span></h1>
+                <div className="grid shadow bg-lime-200 shadow-black overflow-hidden p-2" key={order.id}>
+                    <h1 className="text-xl w-3/4 mx-auto bg-white shadow-lg h-fit  p-2 rounded-2xl  text-center font-bold leading-none text-gray-900 dark:text-white">Order No. <span className="text-blue-600">{order.id}</span></h1>
+                    <h1 className="">Total Price: <span>{order.totalOrderPrice}</span></h1>
                     <div className="flex justify-between">
                         <h2>pay method: {order.paymentMethodType}</h2>
                         <p>status: {order.isPaid ? "Paid" : "Not Paid Yet"}</p>
@@ -53,7 +53,7 @@ export default function Allorders() {
                                 <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Products</h5>
                             </div>
 
-                            <div className="grid">
+                            <div className="grid w-full">
                                 <ul role="list" className=" divide-gray-200 dark:divide-gray-700">
                                     {order?.cartItems?.map((product) => <li className="py-3 sm:py-4" key={product?.product.id}>
                                         <div className="flex items-center">
@@ -62,7 +62,7 @@ export default function Allorders() {
                                             </div>
                                             <div className="flex-1 min-w-0 ms-4">
                                                 <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                                    {product?.product.title}
+                                                    {product?.product.title.split(" ").slice(0, 2).join(" ")}
                                                 </p>
                                                 <p className="text-sm text-gray-500 truncate dark:text-gray-400">
                                                     Count: {product?.count}

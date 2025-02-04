@@ -22,8 +22,8 @@ export default function AddAddress() {
         axios.post(`https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}`, user, {
             headers: {
                 token: localStorage.getItem("userToken")
-            },
-            url: "http://localhost:5173"
+            }, params: { url: "http://localhost:5173" }
+
         }).then(
             (res) => {
                 // setsuccessMassage(res.data)
@@ -43,8 +43,7 @@ export default function AddAddress() {
         axios.post(`https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}`, x, {
             headers: {
                 token: localStorage.getItem("userToken")
-            },
-            url: "http://localhost:5173"
+            }, params: { url: "http://localhost:5173" }
         }).then(
             (res) => {
                 // setsuccessMassage(res.data)

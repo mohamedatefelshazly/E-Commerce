@@ -34,10 +34,20 @@ export default function Categeroies() {
 
     const allCategeroies = data?.data?.data;
 
+    function getSpacificCateg(id) {
+        console.log(id);
+        
+        axios.get(`https://route-ecommerce.vercel.app/api/v1/categories/${id}`, {
+            headers: {
+                token: localStorage.getItem("userToken")
+            }
+        }).then(({ data }) => console.log(data)).catch((error) => console.log(error))
+    }
+
     return (
         <>
             <div className="grid gap-3 text-center  md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
-                {allCategeroies?.map((categ) => <div key={categ._id} className="h-full shadow-black shadow">
+                {allCategeroies?.map((categ) => <div onClick={() => getSpacificCateg(categ._id)} key={categ._id} className="cursor-pointer h-full shadow-black shadow">
                     <img src={categ.image} alt="" />
                     <h1>{categ.name}</h1>
                 </div>)}</div>
