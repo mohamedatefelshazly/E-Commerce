@@ -19,7 +19,7 @@ import { authContext } from '../../Context/AuthContext/AuthContextProvider';
 // import { NavLink } from 'react-router-dom';
 
 export default function Nav() {
-    const { userToken, setuserToken } = useContext(authContext)
+    const { userToken, setuserToken, cartNum } = useContext(authContext)
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
     const menuItems = [
@@ -46,7 +46,7 @@ export default function Nav() {
             {userToken && <NavbarContent className="hidden sm:flex gap-2 relative lg:start-[-10%]" justify="center">
                 {menuItems.map((item, i) => <NavbarItem key={i}>
                     <Link color="foreground" href="">
-                        <NavLink to={item.toLowerCase()} >{item}</NavLink>
+                        <NavLink to={item.toLowerCase()} >{item} {item == "Cart" && <><i className='text-[0.9rem] fa-solid fa-cart-shopping'></i><span className='rounded-full bg-green-200 border text-xs relative top-[-10px] p-0.25'>{cartNum}</span></>}</NavLink>
 
                     </Link>
                 </NavbarItem>)}
@@ -54,6 +54,8 @@ export default function Nav() {
             </NavbarContent>}
 
             <NavbarContent justify="end">
+
+                <NavLink to="/wishlist" className={"flex justify-center items-center"}><label htmlFor='#heart' className='sr-only'>Wish List</label><i id='heart' className="fa-regular fa-heart me-2"></i></NavLink>
 
                 <div className='hidden sm:flex justify-center gap-2'>
                     <i className='fa-brands fa-instagram'></i>
@@ -98,7 +100,7 @@ export default function Nav() {
                             size="lg"
                             onClick={() => setIsMenuOpen(true)}
                         >
-                            {item}
+                            {item} {item == "Cart" && <><i className='text-[0.9rem] fa-solid fa-cart-shopping'></i><span className='rounded-full bg-green-200 border text-xs relative top-[-10px] p-0.25'>{cartNum}</span></>}
                         </NavLink>
 
 

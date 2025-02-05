@@ -5,6 +5,7 @@ import { createContext, useEffect, useState } from "react"
 export const authContext = createContext()
 export default function AuthContextProvider({ children }) {
     const [userToken, setuserToken] = useState(null);
+    const [cartNum, setcartNum] = useState(0)
 
     useEffect(() => {
         if (localStorage.getItem("userToken") != null) {
@@ -25,7 +26,7 @@ export default function AuthContextProvider({ children }) {
 
     return (
 
-        <authContext.Provider value={{ setuserToken, userToken, }}>
+        <authContext.Provider value={{ setuserToken, userToken,cartNum, setcartNum }}>
             {children}
         </authContext.Provider>
 

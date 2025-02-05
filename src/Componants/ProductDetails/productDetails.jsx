@@ -1,16 +1,18 @@
 // import React from 'react'
 
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom"
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import Slider from "react-slick";
 import Product from "../product/Product";
 import { Bounce, toast } from "react-toastify";
+import { authContext } from "../../Context/AuthContext/AuthContextProvider";
 
 
 export default function productDetails() {
+    const { setcartNum } = useContext(authContext)
     const [prod, setProd] = useState({})
     const [isLoading, setisLoading] = useState(true)
     let { id } = useParams()
@@ -54,6 +56,13 @@ export default function productDetails() {
                 theme: "light",
                 transition: Bounce,
             })
+            axios.get("https://ecommerce.routemisr.com/api/v1/cart", {
+                headers: {
+                    token: localStorage.getItem("userToken")
+                }
+            }).then(({ data }) => {
+                setcartNum(data.data.products.length);
+            });
         })
     }
 

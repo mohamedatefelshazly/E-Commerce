@@ -17,6 +17,7 @@ import Categeroies from './Componants/Categeroies/Categeroies';
 import Brands from './Componants/Brands/Brands';
 import AddAddress from './Componants/AddAddress/AddAddress';
 import Allorders from './Componants/AllOrders/Allorders';
+import Wishlist from './Componants/Wishlist/Wishlist';
 
 
 const client = new QueryClient({
@@ -34,6 +35,7 @@ function App() {
       { path: "categeroies", element: <ProtectedRoute><Categeroies /></ProtectedRoute> },
       { path: "addAdress/:cartId", element: <ProtectedRoute><AddAddress /></ProtectedRoute> },
       { path: "allorders", element: <ProtectedRoute><Allorders /></ProtectedRoute> },
+      { path: "wishlist", element: <ProtectedRoute><Wishlist /></ProtectedRoute> },
       { path: "register", element: <Register /> },
       { path: "login", element: <Login /> },
       { path: "productdetails/:id", element: <ProtectedRoute><ProductDetails /></ProtectedRoute> },

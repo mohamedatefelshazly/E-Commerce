@@ -2,13 +2,16 @@
 
 import { Button } from "@heroui/react";
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Bounce, toast } from 'react-toastify';
+import { authContext } from "../../Context/AuthContext/AuthContextProvider";
 
 
 export default function Product(probs) {
+    const { setcartNum } = useContext(authContext)
     const [isLoading, setisLoading] = useState(false)
+    const [isLoading1, setisLoading1] = useState(false)
     const { title, imageCover, price, _id } = probs.prod
     function addProductToCart(productId) {
         setisLoading(true)
@@ -29,21 +32,44 @@ export default function Product(probs) {
                 theme: "light",
                 transition: Bounce,
             });
+            axios.get("https://ecommerce.routemisr.com/api/v1/cart", {
+                headers: {
+                    token: localStorage.getItem("userToken")
+                }
+            }).then(({ data }) => {
+                setcartNum(data.data.products.length);
+            });
 
         })
+    }
+
+    function AddProductToWishList(id) {
+        setisLoading1(true)
+        axios.post(`https://ecommerce.routemisr.com/api/v1/wishlist`, { "productId": id }, {
+            headers: {
+                token: localStorage.getItem("userToken")
+            }
+        }).then(({ data }) => {
+            console.log(data);
+            setisLoading1(false)
+        })
+
     }
 
 
 
     return (
         <>
-            <div className="product">
-                <Link to={("/productdetails/" + _id)}>
-                    <div className="  cursor-pointer border rounded-md  p-2">
+            <div className="product relative">
+                <Link to={("/productdetails/" + _id)} >
+                    <div className="  cursor-pointer border rounded-md  p-2 ">
                         <img src={imageCover} alt={title} className='w-full' />
                         <h1 className="font-bold">{title.split(" ").splice(0, 2).join(" ")}</h1>
                         <span>price: <strong className="text-blue-700">{price}</strong>  EGP</span>
                     </div>
+                    <Button isLoading={isLoading1} onPress={() => AddProductToWishList(_id)} className="text-sm font-medium text-gray-500 hover:text-gray-900 hover:underline dark:text-gray-400 dark:hover:text-white absolute top-0 right-0">
+                        <i className="fa-regular fa-heart"></i><span></span>
+                    </Button>
                 </Link>
 
                 <button onClick={() => addProductToCart(_id)} className="text-center btn mx-auto gap-4 items-center block w-full">
