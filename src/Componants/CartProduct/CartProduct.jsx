@@ -2,12 +2,14 @@
 
 import { Button } from "@heroui/react";
 import axios from "axios"
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { authContext } from "../../Context/AuthContext/AuthContextProvider";
+import { Bounce, toast } from "react-toastify";
 
 
 
 export default function CartProduct({ prod, setisEdited }) {
-
+    const { setwishNum } = useContext(authContext)
     const [isLoading, setisLoading] = useState(false)
     const [isLoading1, setisLoading1] = useState(false)
     const [productCount, setproductCount] = useState(prod.count)
@@ -26,13 +28,32 @@ export default function CartProduct({ prod, setisEdited }) {
     }
     function AddProductToWishList(id) {
         setisLoading1(true)
-        axios.post(`https://ecommerce.routemisr.com/api/v1/wishlist`,{"productId":id}, {
+        axios.post(`https://ecommerce.routemisr.com/api/v1/wishlist`, { "productId": id }, {
             headers: {
                 token: localStorage.getItem("userToken")
             }
         }).then(({ data }) => {
             console.log(data);
             setisLoading1(false)
+            toast.success(data.message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
+
+            axios.get("https://ecommerce.routemisr.com/api/v1/wishlist", {
+                headers: {
+                    token: localStorage.getItem("userToken")
+                }
+            }).then(({ data }) => {
+                setwishNum(data?.data?.length);
+            });
         })
 
     }

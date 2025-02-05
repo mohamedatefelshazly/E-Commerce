@@ -74,7 +74,7 @@ export default function Home() {
 
 
 
-            <div className="p-5 container overflow-hidden mx-auto">
+            <div className="p-1 container overflow-hidden mx-auto">
                 <Slider {...settings}>
                     <div className="p-2"><img className="w-full" src={img1} alt="img1" /></div>
                     <div className="p-2"><img className="w-full mb-2" src={img4} alt="img4" />

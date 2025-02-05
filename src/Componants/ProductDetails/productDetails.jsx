@@ -9,10 +9,12 @@ import Slider from "react-slick";
 import Product from "../product/Product";
 import { Bounce, toast } from "react-toastify";
 import { authContext } from "../../Context/AuthContext/AuthContextProvider";
+import { Button } from "@heroui/react";
 
 
 export default function productDetails() {
-    const { setcartNum } = useContext(authContext)
+    const { setcartNum, setwishNum } = useContext(authContext)
+    const [isLoading1, setisLoading1] = useState(false)
     const [prod, setProd] = useState({})
     const [isLoading, setisLoading] = useState(true)
     let { id } = useParams()
@@ -66,6 +68,37 @@ export default function productDetails() {
         })
     }
 
+    function AddProductToWishList(id) {
+        setisLoading1(true)
+        axios.post(`https://ecommerce.routemisr.com/api/v1/wishlist`, { "productId": id }, {
+            headers: {
+                token: localStorage.getItem("userToken")
+            }
+        }).then(({ data }) => {
+            console.log(data);
+            setisLoading1(false)
+            toast.success(data.message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
+            axios.get("https://ecommerce.routemisr.com/api/v1/wishlist", {
+                headers: {
+                    token: localStorage.getItem("userToken")
+                }
+            }).then(({ data }) => {
+                setwishNum(data?.data?.length);
+            });
+        })
+
+    }
+
 
 
 
@@ -102,19 +135,22 @@ export default function productDetails() {
 
                 </div> */}
                 <div>
-                    <section className="py-8 bg-white md:py-16 dark:bg-gray-900 antialiased">
+                    <section className="py-8  bg-white md:py-16 dark:bg-gray-900 antialiased">
                         <div className="max-w-screen-xl px-4 mx-auto 2xl:px-0">
                             <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
-                                <div className="shrink-0 max-w-md lg:max-w-lg mx-auto">
-                                    <img className="w-full dark:hidden" src={prod.imageCover} alt={prod.title} />
+                                <div className="shrink-0 rounded-md p-1 max-w-md lg:max-w-lg mx-auto">
+                                    <img className="w-full " src={prod.imageCover} alt={prod.title} />
 
                                 </div>
 
                                 <div className="mt-6 sm:mt-8 lg:mt-0">
+
                                     <h1
                                         className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"
                                     >
-                                        {prod.title}
+                                        {prod.title} <Button isLoading={isLoading1} onPress={() => AddProductToWishList(prod._id)} className="text-sm font-medium text-gray-500 hover:text-gray-900 hover:underline dark:text-gray-400 dark:hover:text-white">
+                                            <i className="fa-regular fa-heart"></i><span></span>
+                                        </Button>
                                     </h1>
                                     <div className="mt-4 sm:items-center sm:gap-4 sm:flex lg:grid">
                                         <p

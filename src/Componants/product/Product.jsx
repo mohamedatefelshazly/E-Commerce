@@ -6,10 +6,11 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Bounce, toast } from 'react-toastify';
 import { authContext } from "../../Context/AuthContext/AuthContextProvider";
+import { style } from "framer-motion/client";
 
 
 export default function Product(probs) {
-    const { setcartNum } = useContext(authContext)
+    const { setwishNum, setcartNum } = useContext(authContext)
     const [isLoading, setisLoading] = useState(false)
     const [isLoading1, setisLoading1] = useState(false)
     const { title, imageCover, price, _id } = probs.prod
@@ -39,7 +40,7 @@ export default function Product(probs) {
             }).then(({ data }) => {
                 setcartNum(data.data.products.length);
             });
-
+            // setcartNum(cartNum + 1);
         })
     }
 
@@ -52,6 +53,24 @@ export default function Product(probs) {
         }).then(({ data }) => {
             console.log(data);
             setisLoading1(false)
+            toast.success(data.message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
+            axios.get("https://ecommerce.routemisr.com/api/v1/wishlist", {
+                headers: {
+                    token: localStorage.getItem("userToken")
+                }
+            }).then(({ data }) => {
+                setwishNum(data?.data?.length);            
+            });
         })
 
     }
@@ -78,7 +97,7 @@ export default function Product(probs) {
                         className="flex items-center w-full  justify-center gap-2 bg-green-500 py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none  rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                         role="button"
                     >
-                        <i className="fa fa-cart-arrow-down"></i> Add to Cart
+                        <i className="fa fa-cart-arrow-down" ></i> Add to Cart
                     </div></Button>
 
 

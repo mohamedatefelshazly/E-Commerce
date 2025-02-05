@@ -19,7 +19,7 @@ import { authContext } from '../../Context/AuthContext/AuthContextProvider';
 // import { NavLink } from 'react-router-dom';
 
 export default function Nav() {
-    const { userToken, setuserToken, cartNum } = useContext(authContext)
+    const { userToken, setuserToken, cartNum, wishNum } = useContext(authContext)
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
     const menuItems = [
@@ -55,7 +55,7 @@ export default function Nav() {
 
             <NavbarContent justify="end">
 
-                <NavLink to="/wishlist" className={"flex justify-center items-center"}><label htmlFor='#heart' className='sr-only'>Wish List</label><i id='heart' className="fa-regular fa-heart me-2"></i></NavLink>
+                <NavLink to="/wishlist" className={"flex justify-center items-center relative"}><label htmlFor='#heart' className='sr-only'>Wish List</label><i id='heart' className="fa-regular fa-heart"></i><span className='rounded-full bg-green-200 border text-xs relative top-[-10px] p-0.25'>{wishNum}</span></NavLink>
 
                 <div className='hidden sm:flex justify-center gap-2'>
                     <i className='fa-brands fa-instagram'></i>
