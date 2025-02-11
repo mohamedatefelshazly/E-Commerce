@@ -7,9 +7,12 @@ import { Link } from "react-router-dom";
 import { Bounce, toast } from 'react-toastify';
 import { authContext } from "../../Context/AuthContext/AuthContextProvider";
 import { style } from "framer-motion/client";
-
+import { changeCounter } from "../../Redux/CartCounterSlice";
+import { useDispatch } from "react-redux";
+import { cartNumber } from "../../Redux/CartCounterSlice";
 
 export default function Product(probs) {
+    const dispatch = useDispatch()
     const { setwishNum, setcartNum } = useContext(authContext)
     const [isLoading, setisLoading] = useState(false)
     const [isLoading1, setisLoading1] = useState(false)
@@ -33,13 +36,14 @@ export default function Product(probs) {
                 theme: "light",
                 transition: Bounce,
             });
-            axios.get("https://ecommerce.routemisr.com/api/v1/cart", {
-                headers: {
-                    token: localStorage.getItem("userToken")
-                }
-            }).then(({ data }) => {
-                setcartNum(data.data.products.length);
-            });
+            dispatch(cartNumber());
+            // axios.get("https://ecommerce.routemisr.com/api/v1/cart", {
+            //     headers: {
+            //         token: localStorage.getItem("userToken")
+            //     }
+            // }).then(({ data }) => {
+            //     setcartNum(data.data.products.length);
+            // });
             // setcartNum(cartNum + 1);
         })
     }
@@ -69,7 +73,7 @@ export default function Product(probs) {
                     token: localStorage.getItem("userToken")
                 }
             }).then(({ data }) => {
-                setwishNum(data?.data?.length);            
+                setwishNum(data?.data?.length);
             });
         })
 

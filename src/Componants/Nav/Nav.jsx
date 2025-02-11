@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
 import {
     Navbar,
@@ -16,11 +16,20 @@ import {
 import logo from "../../assets/E-Commerce assets/images/freshcart-logo.svg"
 import { useContext } from 'react';
 import { authContext } from '../../Context/AuthContext/AuthContextProvider';
+import { useDispatch, useSelector } from 'react-redux';
 // import { NavLink } from 'react-router-dom';
-
+import { cartNumber } from '../../Redux/CartCounterSlice';
+import { wishNumber } from '../../Redux/wishCounterSlice';
 export default function Nav() {
+    const dispatch = useDispatch()
     const { userToken, setuserToken, cartNum, wishNum } = useContext(authContext)
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const { cartCounter } = useSelector((store) => store.cartCounterReducer)
+    const { wishCounter } = useSelector((store) => store.wishCounterReducer)
+    useEffect(() => {
+        dispatch(cartNumber())
+        dispatch(wishNumber())
+    }, [])
 
     const menuItems = [
         "Home",
@@ -46,7 +55,7 @@ export default function Nav() {
             {userToken && <NavbarContent className="hidden sm:flex gap-2 relative lg:start-[-10%]" justify="center">
                 {menuItems.map((item, i) => <NavbarItem key={i}>
                     <Link color="foreground" href="">
-                        <NavLink to={item.toLowerCase()} >{item} {item == "Cart" && <><i className='text-[0.9rem] fa-solid fa-cart-shopping'></i><span className='rounded-full bg-green-200 border text-xs relative top-[-10px] p-0.25'>{cartNum}</span></>}</NavLink>
+                        <NavLink to={item.toLowerCase()} >{item} {item == "Cart" && <><i className='text-[0.9rem] fa-solid fa-cart-shopping'></i><span className='rounded-full bg-green-200 border text-xs relative top-[-10px] p-0.25'>{cartCounter}</span></>}</NavLink>
 
                     </Link>
                 </NavbarItem>)}
@@ -54,8 +63,7 @@ export default function Nav() {
             </NavbarContent>}
 
             <NavbarContent justify="end">
-
-                <NavLink to="/wishlist" className={"flex justify-center items-center relative"}><label htmlFor='#heart' className='sr-only'>Wish List</label><i id='heart' className="fa-regular fa-heart"></i><span className='rounded-full bg-green-200 border text-xs relative top-[-10px] p-0.25'>{wishNum}</span></NavLink>
+                {userToken && <NavLink to="/wishlist" className={"flex justify-center items-center relative"}><label htmlFor='#heart' className='sr-only'>Wish List</label><i id='heart' className="fa-regular fa-heart"></i><span className='rounded-full bg-green-200 border text-xs relative top-[-10px] p-0.25'>{wishNum}</span></NavLink>}
 
                 <div className='hidden sm:flex justify-center gap-2'>
                     <i className='fa-brands fa-instagram'></i>
@@ -100,7 +108,7 @@ export default function Nav() {
                             size="lg"
                             onClick={() => setIsMenuOpen(true)}
                         >
-                            {item} {item == "Cart" && <><i className='text-[0.9rem] fa-solid fa-cart-shopping'></i><span className='rounded-full bg-green-200 border text-xs relative top-[-10px] p-0.25'>{cartNum}</span></>}
+                            {item} {item == "Cart" && <><i className='text-[0.9rem] fa-solid fa-cart-shopping'></i><span className='rounded-full bg-green-200 border text-xs relative top-[-10px] p-0.25'>{cartCounter}</span></>}
                         </NavLink>
 
 

@@ -8,8 +8,11 @@ import { Button } from '@heroui/react'
 
 import { authContext } from '../../Context/AuthContext/AuthContextProvider'
 import { Bounce, toast } from 'react-toastify'
+import { cartNumber } from '../../Redux/CartCounterSlice'
+import { useDispatch } from 'react-redux'
 
 export default function Wishlist() {
+    const dispatch=useDispatch()
     const [isEdited, setisEdited] = useState(false)
     const { setcartNum, setwishNum, wishNum } = useContext(authContext)
     const [isLoading, setisLoading] = useState(true)
@@ -79,13 +82,14 @@ export default function Wishlist() {
                 theme: "light",
                 transition: Bounce,
             });
-            axios.get("https://ecommerce.routemisr.com/api/v1/cart", {
-                headers: {
-                    token: localStorage.getItem("userToken")
-                }
-            }).then(({ data }) => {
-                setcartNum(data.data.products.length);
-            });
+            dispatch(cartNumber());
+            // axios.get("https://ecommerce.routemisr.com/api/v1/cart", {
+            //     headers: {
+            //         token: localStorage.getItem("userToken")
+            //     }
+            // }).then(({ data }) => {
+            //     setcartNum(data.data.products.length);
+            // });
             // setcartNum(cartNum + 1);
         })
     }

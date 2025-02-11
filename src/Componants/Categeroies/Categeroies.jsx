@@ -36,7 +36,7 @@ export default function Categeroies() {
 
     function getSpacificCateg(id) {
         console.log(id);
-        
+
         axios.get(`https://route-ecommerce.vercel.app/api/v1/categories/${id}`, {
             headers: {
                 token: localStorage.getItem("userToken")

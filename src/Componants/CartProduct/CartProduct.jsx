@@ -5,10 +5,13 @@ import axios from "axios"
 import { useContext, useState } from "react";
 import { authContext } from "../../Context/AuthContext/AuthContextProvider";
 import { Bounce, toast } from "react-toastify";
+import { cartNumber } from "../../Redux/CartCounterSlice";
+import { useDispatch } from "react-redux";
 
 
 
 export default function CartProduct({ prod, setisEdited }) {
+    const dispatch = useDispatch()
     const { setwishNum } = useContext(authContext)
     const [isLoading, setisLoading] = useState(false)
     const [isLoading1, setisLoading1] = useState(false)
@@ -23,6 +26,7 @@ export default function CartProduct({ prod, setisEdited }) {
             console.log(data);
             setisLoading(false)
             setisEdited(true)
+            dispatch(cartNumber());
         })
 
     }
@@ -46,7 +50,7 @@ export default function CartProduct({ prod, setisEdited }) {
                 theme: "colored",
                 transition: Bounce,
             });
-
+           
             axios.get("https://ecommerce.routemisr.com/api/v1/wishlist", {
                 headers: {
                     token: localStorage.getItem("userToken")

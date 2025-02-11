@@ -18,6 +18,8 @@ import Brands from './Componants/Brands/Brands';
 import AddAddress from './Componants/AddAddress/AddAddress';
 import Allorders from './Componants/AllOrders/Allorders';
 import Wishlist from './Componants/Wishlist/Wishlist';
+import { Provider } from 'react-redux';
+import { storeRedux } from './Redux/reduxStore';
 
 
 const client = new QueryClient({
@@ -46,14 +48,16 @@ function App() {
 
   return (
     <>
-      <QueryClientProvider client={client}>
-        <AuthContextProvider>
-          <HeroUIProvider>
-            <RouterProvider router={route} />
-            <ToastContainer />
-          </HeroUIProvider>
-        </AuthContextProvider>
-      </QueryClientProvider>
+      <Provider store={storeRedux}>
+        <QueryClientProvider client={client}>
+          <AuthContextProvider>
+            <HeroUIProvider>
+              <RouterProvider router={route} />
+              <ToastContainer />
+            </HeroUIProvider>
+          </AuthContextProvider>
+        </QueryClientProvider>
+      </Provider>
     </>
   )
 }

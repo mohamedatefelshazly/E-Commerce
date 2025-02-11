@@ -9,9 +9,11 @@ import { NavLink } from "react-router-dom"
 import AddAddress from "../AddAddress/AddAddress"
 import Login from "../Login/Login"
 import { authContext } from "../../Context/AuthContext/AuthContextProvider"
-
+import { cartNumber } from "../../Redux/CartCounterSlice"
+import { useDispatch } from "react-redux"
 export default function Cart() {
-    const { userToken, setuserToken } = useContext(authContext)
+    const dispatch = useDispatch()
+    const { userToken, setuserToken, setcartNum } = useContext(authContext)
     if (userToken == null) {
         return <Login />
     }
@@ -46,7 +48,15 @@ export default function Cart() {
         }).then(({ data }) => {
             setisClearing(false)
             setnumOfCartItems(0)
-            console.log(data);
+            // console.log(data);
+            dispatch(cartNumber());
+            // axios.get("https://ecommerce.routemisr.com/api/v1/cart", {
+            //     headers: {
+            //         token: localStorage.getItem("userToken")
+            //     }
+            // }).then(({ data }) => {
+            //     setcartNum(data.data.products.length);
+            // });
 
         }
 

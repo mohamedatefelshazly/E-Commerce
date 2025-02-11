@@ -9,14 +9,22 @@ import img3 from "../../assets/E-Commerce assets/images/slider-image-3.jpeg"
 import img4 from "../../assets/E-Commerce assets/images/banner-4.jpeg"
 import img5 from "../../assets/E-Commerce assets/images/grocery-banner-2.jpeg"
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Login from "../Login/Login";
 import { authContext } from "../../Context/AuthContext/AuthContextProvider";
-
+import { getCategories } from "../../Redux/categoriesSlice"
+import { useDispatch, useSelector } from "react-redux";
+import { storeRedux } from "../../Redux/reduxStore";
 
 
 export default function Home() {
+    const { AllCategories } = useSelector((store) => store.categoriesReducer)
+    const dispatch = useDispatch()
     const { userToken, setuserToken } = useContext(authContext)
+    useEffect(() => {
+        dispatch(getCategories())
+    }, [])
+
     if (userToken == null) {
         return <Login />
     }
@@ -41,6 +49,13 @@ export default function Home() {
         infinite: false,
         speed: 500,
         slidesToShow: 2,
+        slidesToScroll: 1,
+    };
+    const settings1 = {
+        dots: true,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 5,
         slidesToScroll: 1,
     };
     function getProducts2() {
@@ -84,6 +99,14 @@ export default function Home() {
                     <div className="p-2"><img className="w-full" src={img2} alt="img2" /></div>
                     <div className="p-2"><img className="w-full" src={img3} alt="img3" /></div>
 
+                </Slider>
+            </div>
+            <div>
+                <Slider {...settings1} >
+                    {AllCategories?.map((categ) => <div onClick={() => console.log(categ._id)} key={categ._id} className="cursor-pointer m-2 shadow-black shadow">
+                        <img className="w-full" src={categ.image} alt="" />
+                        <h1>{categ.name}</h1>
+                    </div>)}
                 </Slider>
             </div>
             <div className="container grid sm:grid-cols-1  md:grid-cols-2 lg:grid-cols-4 mx-auto gap-3 py-4">

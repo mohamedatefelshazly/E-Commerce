@@ -10,7 +10,8 @@ import Product from "../product/Product";
 import { Bounce, toast } from "react-toastify";
 import { authContext } from "../../Context/AuthContext/AuthContextProvider";
 import { Button } from "@heroui/react";
-
+import { cartNumber } from "../../Redux/CartCounterSlice";
+import { useDispatch } from "react-redux";
 
 export default function productDetails() {
     const { setcartNum, setwishNum } = useContext(authContext)
@@ -19,7 +20,7 @@ export default function productDetails() {
     const [isLoading, setisLoading] = useState(true)
     let { id } = useParams()
     const [relatedProducts, setrelatedProducts] = useState([])
-
+    const dispatch = useDispatch()
     useEffect(() => {
         axios.get(`https://ecommerce.routemisr.com/api/v1/products/${id}`).then((res) => {
             setProd(res.data.data)
@@ -58,13 +59,14 @@ export default function productDetails() {
                 theme: "light",
                 transition: Bounce,
             })
-            axios.get("https://ecommerce.routemisr.com/api/v1/cart", {
-                headers: {
-                    token: localStorage.getItem("userToken")
-                }
-            }).then(({ data }) => {
-                setcartNum(data.data.products.length);
-            });
+            dispatch(cartNumber());
+            // axios.get("https://ecommerce.routemisr.com/api/v1/cart", {
+            //     headers: {
+            //         token: localStorage.getItem("userToken")
+            //     }
+            // }).then(({ data }) => {
+            //     setcartNum(data.data.products.length);
+            // });
         })
     }
 
