@@ -22,14 +22,15 @@ import { cartNumber } from '../../Redux/CartCounterSlice';
 import { wishNumber } from '../../Redux/wishCounterSlice';
 export default function Nav() {
     const dispatch = useDispatch()
-    const { userToken, setuserToken, cartNum, wishNum } = useContext(authContext)
+    const { userToken, setuserToken, wishNum } = useContext(authContext)
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const { cartCounter } = useSelector((store) => store.cartCounterReducer)
-    const { wishCounter } = useSelector((store) => store.wishCounterReducer)
+    // const { wishCounter } = useSelector((store) => store.wishCounterReducer)
     useEffect(() => {
         dispatch(cartNumber())
         dispatch(wishNumber())
     }, [])
+
 
     const menuItems = [
         "Home",

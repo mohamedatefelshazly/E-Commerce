@@ -9,21 +9,36 @@ import img3 from "../../assets/E-Commerce assets/images/slider-image-3.jpeg"
 import img4 from "../../assets/E-Commerce assets/images/banner-4.jpeg"
 import img5 from "../../assets/E-Commerce assets/images/grocery-banner-2.jpeg"
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import Login from "../Login/Login";
 import { authContext } from "../../Context/AuthContext/AuthContextProvider";
 import { getCategories } from "../../Redux/categoriesSlice"
 import { useDispatch, useSelector } from "react-redux";
-import { storeRedux } from "../../Redux/reduxStore";
+// import { head } from "framer-motion/client";
+// import { storeRedux } from "../../Redux/reduxStore";
 
 
 export default function Home() {
+    const { data, isError, error, isLoading } = useQuery({
+        queryKey: ['getProducts'],
+        queryFn: getProducts2,
+        // refetchOnWindowFocus:false,
+        // refetchInterval:3000,
+        // retry:2,
+        // retryDelay:1000,
+        // staleTime:200000,
+        // refetchOnMount:true,
+        gcTime: Infinity,
+        placeholderData: keepPreviousData,
+    })
     const { AllCategories } = useSelector((store) => store.categoriesReducer)
     const dispatch = useDispatch()
-    const { userToken, setuserToken } = useContext(authContext)
+    const { userToken } = useContext(authContext)
+    const [categProducts, setcategProducts] = useState(null)
     useEffect(() => {
         dispatch(getCategories())
     }, [])
+
 
     if (userToken == null) {
         return <Login />
@@ -61,24 +76,27 @@ export default function Home() {
     function getProducts2() {
         return axios.get("https://ecommerce.routemisr.com/api/v1/products")
     }
+    function selectCateg(id) {
+        axios.get(`https://ecommerce.routemisr.com/api/v1/products?category[in]=${id}`, {
+            headers: {
+                token: localStorage.getItem("userToken")
+            }
+        }).then((res) => {
+            setcategProducts(res.data.data);
+        })
+    }
 
-    const { data, isError, error, isLoading, isFetching, isFetched } = useQuery({
-        queryKey: ['getProducts'],
-        queryFn: getProducts2,
-        // refetchOnWindowFocus:false,
-        // refetchInterval:3000,
-        // retry:2,
-        // retryDelay:1000,
-        // staleTime:200000,
-        // refetchOnMount:true,
-        gcTime: Infinity,
-        placeholderData: keepPreviousData,
-    })
+
+
 
     if (isLoading) {
         return <LoadingScreen />
     }
-    const allProducts = data?.data?.data
+    let allProducts = data?.data?.data
+    if (categProducts) {
+        allProducts = categProducts
+    }
+
     if (isError) {
         console.log(error);
     }
@@ -101,9 +119,9 @@ export default function Home() {
 
                 </Slider>
             </div>
-            <div>
+            <div className="p-1 container mx-auto">
                 <Slider {...settings1} >
-                    {AllCategories?.map((categ) => <div onClick={() => console.log(categ._id)} key={categ._id} className="cursor-pointer m-2 shadow-black shadow">
+                    {AllCategories?.map((categ) => <div onClick={() => selectCateg(categ._id)} key={categ._id} className="cursor-pointer m-2 shadow-black shadow">
                         <img className="w-full" src={categ.image} alt="" />
                         <h1>{categ.name}</h1>
                     </div>)}

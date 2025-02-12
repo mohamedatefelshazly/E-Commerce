@@ -8,7 +8,11 @@ import { authContext } from "../../Context/AuthContext/AuthContextProvider"
 import Login from "../Login/Login"
 
 export default function Categeroies() {
-    const { userToken, setuserToken } = useContext(authContext)
+    const { data, isLoading, error, isError } = useQuery({
+        queryKey: ["Categeroies"],
+        queryFn: getCategeroies,
+    })
+    const { userToken } = useContext(authContext)
     if (userToken == null) {
         return <Login />
     }
@@ -19,10 +23,7 @@ export default function Categeroies() {
             }
         })
     }
-    const { data, isLoading, error, isError } = useQuery({
-        queryKey: ["Categeroies"],
-        queryFn: getCategeroies,
-    })
+
     if (isLoading) {
         return <LoadingScreen />
     }

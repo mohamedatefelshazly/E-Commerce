@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useFormik } from "formik"
 import { useContext, useEffect, useState } from "react";
-import { RotatingLines } from "react-loader-spinner";
+// import { RotatingLines } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import * as yup from 'yup';
 import { authContext } from "../../Context/AuthContext/AuthContextProvider";

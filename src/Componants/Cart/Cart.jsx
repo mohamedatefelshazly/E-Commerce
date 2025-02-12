@@ -6,23 +6,11 @@ import CartProduct from "../CartProduct/CartProduct"
 import LoadingScreen from "../LoadingScreen/LoadingScreen"
 import { Button } from "@heroui/react"
 import { NavLink } from "react-router-dom"
-import AddAddress from "../AddAddress/AddAddress"
 import Login from "../Login/Login"
 import { authContext } from "../../Context/AuthContext/AuthContextProvider"
 import { cartNumber } from "../../Redux/CartCounterSlice"
 import { useDispatch } from "react-redux"
 export default function Cart() {
-    const dispatch = useDispatch()
-    const { userToken, setuserToken, setcartNum } = useContext(authContext)
-    if (userToken == null) {
-        return <Login />
-    }
-    const [cartProducts, setcartProducts] = useState([])
-    const [numOfCartItems, setnumOfCartItems] = useState(0)
-    const [cartId, setcartId] = useState(null)
-    const [isLoading, setisLoading] = useState(true)
-    const [isClearing, setisClearing] = useState(false)
-    const [totalPrice, settotalPrice] = useState(0)
     const [isEdited, setisEdited] = useState(false)
     useEffect(() => {
         axios.get("https://ecommerce.routemisr.com/api/v1/cart", {
@@ -39,13 +27,28 @@ export default function Cart() {
         })
 
     }, [isEdited])
+    const [cartProducts, setcartProducts] = useState([])
+    const [numOfCartItems, setnumOfCartItems] = useState(0)
+    const [cartId, setcartId] = useState(null)
+    const [isLoading, setisLoading] = useState(true)
+    const [isClearing, setisClearing] = useState(false)
+    const [totalPrice, settotalPrice] = useState(0)
+
+
+    const dispatch = useDispatch()
+    const { userToken } = useContext(authContext)
+    if (userToken == null) {
+        return <Login />
+    }
+
+
     function clearCart() {
         setisClearing(true)
         axios.delete("https://ecommerce.routemisr.com/api/v1/cart", {
             headers: {
                 token: localStorage.getItem("userToken")
             }
-        }).then(({ data }) => {
+        }).then(() => {
             setisClearing(false)
             setnumOfCartItems(0)
             // console.log(data);
@@ -234,9 +237,9 @@ export default function Cart() {
                                         <span className="text-sm font-normal text-gray-500 dark:text-gray-400"> or </span>
                                         <a href="/" title="" className="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">
                                             Continue Shopping
-                                            <svg className="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            {/* <svg className="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
-                                            </svg>
+                                            </svg> */}
                                         </a>
                                     </div>
                                 </div>

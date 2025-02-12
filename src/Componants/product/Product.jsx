@@ -6,14 +6,14 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Bounce, toast } from 'react-toastify';
 import { authContext } from "../../Context/AuthContext/AuthContextProvider";
-import { style } from "framer-motion/client";
-import { changeCounter } from "../../Redux/CartCounterSlice";
+// import { style } from "framer-motion/client";
+// import { changeCounter } from "../../Redux/CartCounterSlice";
 import { useDispatch } from "react-redux";
 import { cartNumber } from "../../Redux/CartCounterSlice";
 
 export default function Product(probs) {
     const dispatch = useDispatch()
-    const { setwishNum, setcartNum } = useContext(authContext)
+    const { setwishNum } = useContext(authContext)
     const [isLoading, setisLoading] = useState(false)
     const [isLoading1, setisLoading1] = useState(false)
     const { title, imageCover, price, _id } = probs.prod

@@ -1,6 +1,6 @@
 // import React from 'react'
 import { Button } from "@heroui/react";
-import axios, { all } from "axios";
+import axios from "axios";
 import { useFormik } from "formik"
 import { useEffect, useState } from "react";
 // import { RotatingLines } from "react-loader-spinner";
@@ -101,9 +101,10 @@ export default function AddAddress() {
             headers: {
                 token: localStorage.getItem("userToken")
             }
-        }).then(({ data }) => {
-            // console.log(data);
         })
+        // .then(({ data }) => {
+        //     // console.log(data);
+        // })
 
     }
 

@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux'
 export default function Wishlist() {
     const dispatch=useDispatch()
     const [isEdited, setisEdited] = useState(false)
-    const { setcartNum, setwishNum, wishNum } = useContext(authContext)
+    const {  setwishNum, wishNum } = useContext(authContext)
     const [isLoading, setisLoading] = useState(true)
     const [wishList, setwishList] = useState(wishNum)
 
